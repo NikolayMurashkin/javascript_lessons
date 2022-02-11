@@ -1,38 +1,18 @@
 "use strict";
-/*const movies = () => {
-	let numberOfFilms;
+const movies = () => {
+	// let numberOfFilms;
 
-	function start() {
-		numberOfFilms = +prompt('Сколько фильмов вы уже посмотрели?');
-		while (numberOfFilms == '' || numberOfFilms == null || isNaN(numberOfFilms)) {
-			numberOfFilms = +prompt('Сколько фильмов вы уже посмотрели?');
-		}
-	}
-	start();
+	// function start() {
+	// 	numberOfFilms = +prompt('Сколько фильмов вы уже посмотрели?');
+	// 	while (numberOfFilms == '' || numberOfFilms == null || isNaN(numberOfFilms)) {
+	// 		numberOfFilms = +prompt('Сколько фильмов вы уже посмотрели?');
+	// 	}
+	// }
+	// start();
 
-	const personalMovieDB = {
-		count: numberOfFilms,
-		movies: {},
-		actors: {},
-		genres: [],
-		privat: true,
-	};
 
-	function showMyDB() {
-		if (personalMovieDB.privat !== false) {
-			console.log(personalMovieDB);
-		}
-	}
-	showMyDB();
 
-	function writeYourGenres() {
-		for (let i = 1; i < 4; i++) {
-			personalMovieDB.genres.push(prompt(`Ваш любимый жанр под номером ${i}`));
-		}
-	}
-	writeYourGenres();
-
-	function remebmerMyFilms() {
+	/*function remebmerMyFilms() {
 		let i = 0;
 		do {
 			let a = prompt('Один из последних просмотренных фильмов?', '');
@@ -57,51 +37,74 @@
 		}
 	}
 	detectPersonalLevel();
-
+	*/
 };
 
 movies();
-*/
-
-const options = {
-	name: 'test',
-	width: 1024,
-	height: 1024,
-	colors: {
-		border: 'black',
-		bg: 'red',
+const personalMovieDB = {
+	count: 0,
+	movies: {},
+	actors: {},
+	genres: [],
+	privat: false,
+	start() {
+		this.count = +prompt('Сколько фильмов вы уже посмотрели?');
+		while (this.count == '' || this.count == null || isNaN(this.count)) {
+			this.count = +prompt('Сколько фильмов вы уже посмотрели?');
+		}
 	},
-	makeTest: function () {
-		console.log('test');
-	}
+	toggleVisibleMyDb() {
+		if (this.privat) {
+			this.privat = false;
+		} else {
+			this.privat = true;
+		}
+	},
+	writeYourGenres() {
+		for (let i = 1; i < 4; i++) {
+			let l = 0;
+			let genre = prompt(`Ваш любимый жанр под номером ${i}`);
+			while (l <= 0) {
+				if (genre !== null && genre.length > 0) {
+					this.genres.push(genre);
+					l++;
+				} else {
+					// alert('Вы должны что-нибудь ввести!');
+					genre = prompt(`Ваш любимый жанр под номером ${i}`);
+				}
+			}
+		}
+		this.genres.forEach((genre, i) => {
+			console.log(`Любимый жанр #${i + 1} - это ${genre}`);
+		});
+	},
+	remebmerMyFilms() {
+		let i = 0;
+		do {
+			let a = prompt('Один из последних просмотренных фильмов?', '');
+			let b = +prompt('На сколько оцените его?', '');
+			if (a.length <= 50 && b != 0 && a != null && a.length != 0) {
+				this.movies[a] = b;
+				i++;
+			}
+		} while (i < 2);
+	},
+	detectPersonalLevel() {
+		if (this.count < 10) {
+			alert('Просмотрено довольно мало фильмов');
+		} else if (this.count >= 10 && this.count <= 30) {
+			alert('Вы классический зритель');
+		} else if (this.count > 30) {
+			alert('Вы киноман!');
+		} else {
+			alert('Ошибка');
+		}
+	},
+	showMyDB(hidden) {
+		if (!hidden) {
+			console.log(this);
+		}
+	},
 };
-
-options.makeTest();
-// console.log(Object.keys(options).length);
-
-const {border, bg} = options.colors;
-console.log(border);
-
-
-
-// console.log(options.name);
-
-// delete options.name;
-
-// console.log(options);
-
-// let counter = 0;
-
-// for (let key in options) {
-// 	if (typeof (options[key]) === 'object') {
-// 		for (let i in options[key]) {
-// 			console.log(`Свойство ${i} имеет значение ${options[key][i]}`);
-// 		}
-// 	} else {
-// 		console.log(`Свойство ${key} имеет значение ${options[key]}`);
-// 		counter++;
-// 	}
-// }
-// console.log(counter);
-// console.log(options['colors']['border']);
-
+personalMovieDB.toggleVisibleMyDb();
+personalMovieDB.showMyDB(personalMovieDB.privat);
